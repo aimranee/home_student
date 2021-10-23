@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:home_student/screen/homePage.dart';
+import 'package:home_student/home.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'favorite.dart';
+import 'profile.dart';
+import 'map.dart';
+import 'tabbar_material_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,68 +14,58 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ScreenUtilInit(
+      designSize: Size(360, 750),
+      builder: () => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const MainPage()
       ),
-      home: const homePage(),
     );
   }
 }
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({ Key? key }) : super(key: key);
+  
+  @override
+  _MainPageState createState() => _MainPageState();
+}
 
-//   // This widget is the home page of your application. It is stateful, meaning
-//   // that it has a State object (defined below) that contains fields that affect
-//   // how it looks.
+class _MainPageState extends State<MainPage> {
+   int index = 0;
 
-//   // This class is the configuration for the state. It holds the values (in this
-//   // case the title) provided by the parent (in this case the App widget) and
-//   // used by the build method of the State. Fields in a Widget subclass are
-//   // always marked "final".
+  final pages = <Widget>[
+    Home(),
+    Favorite(),
+    Profile(),
+    Map(),
+  ];
 
-//   final String title;
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        extendBody: true,
+        body: pages[index],
+        bottomNavigationBar: TabBarMaterialWidget(
+          index: index,
+          onChangedTab: onChangedTab,
+        ),
+        floatingActionButton: ClipRRect(
+          borderRadius: BorderRadius.circular(50.0),
+        child: FloatingActionButton(
+          backgroundColor: Color(0xfff63e3c),
+          shape: RoundedRectangleBorder(),
+          onPressed: () {},
+          tooltip: 'Add Annonce',
+          child: Icon(Icons.add, size: ScreenUtil().setHeight(26.0),),
+          elevation: 2.0,
+        ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      );
 
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       _counter++;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             const Text(
-//               'You have pushed the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
+  void onChangedTab(int index) {
+    setState(() {
+      this.index = index;
+    });
+  }
+}
