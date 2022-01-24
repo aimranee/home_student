@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:home_student/data.dart';
+import 'package:home_student/detail.dart';
 import 'package:home_student/filter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -153,10 +154,10 @@ class _HomeState extends State<Home> {
   Widget buildProperty(Property property, int index){
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => Detail(property: property)),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Detail(property: property)),
+        );
       },
       child: Card(
         margin: EdgeInsets.only(bottom: 24),
